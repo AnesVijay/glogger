@@ -41,8 +41,6 @@ logLevel:
 	3 - Error
 */
 func InitLogger(path string, logLevel int) {
-	// // TODO создавать лог файл, если его нет
-	// если файла не существует - создаём
 	file := strings.Join([]string{
 		string(time.Now().Format("02-01-2006")),
 		"txt"},
@@ -56,12 +54,12 @@ func InitLogger(path string, logLevel int) {
 		pathToDir := strings.Join(pathParts[:len(pathParts)-1], "/")
 		err := os.MkdirAll(pathToDir, 0764)
 		if err != nil {
-			logger.SendError(fmt.Sprintf("failed to create dir for log file: %v", err))
+			logger.SendError(fmt.Sprintf("failed to create dir for log file: %v\n", err))
 			log.Fatal(err)
 		}
 		_, err = os.Create(path)
 		if err != nil {
-			logger.SendError(fmt.Sprintf("failed to create log file: %v", err))
+			logger.SendError(fmt.Sprintf("failed to create log file: %v\n", err))
 			log.Fatal(err)
 		}
 	}
@@ -74,7 +72,7 @@ func InitLogger(path string, logLevel int) {
 func (l *Logger) writeToLogFile(log string) {
 	file, err := os.OpenFile(l.file, os.O_RDWR|os.O_APPEND, 0o644)
 	if err != nil {
-		fmt.Printf("ERROR: failed to open log file to write: %v", err)
+		fmt.Printf("ERROR: failed to open log file to write: %v\n", err)
 	}
 	file.WriteString(log + "\n")
 }
